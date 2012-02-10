@@ -30,13 +30,13 @@ object App {
   def sumOfMultiples(limit: Int, multiples: List[Int]): Int = {
     val range = List.range(1, limit)
     
-    var map = scala.collection.mutable.Set.empty[Int]
+    var set = scala.collection.mutable.Set.empty[Int]
     
     for(multiple <- multiples) 
-      map ++= range filter(_ % multiple == 0)
+      set ++= range filter(_ % multiple == 0)
     
     var sum = 0
-    map.foreach(sum += _)
+    set.foreach(sum += _)
     
     sum
   }
