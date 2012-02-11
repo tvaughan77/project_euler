@@ -24,6 +24,7 @@
     <modules>
         <module>scala-parent</module>
         <module>problem-001</module>
+        <module>problem-002</module>
     </modules>
 
 </project>
