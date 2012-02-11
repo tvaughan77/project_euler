@@ -33,7 +33,7 @@ print POM<<EOF;
     <groupId>com.opower</groupId>
     <artifactId>$project_name</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Problem XXX:</name>
+    <name>Problem ${problem_number}: FILL IN DESCRIPTION HERE</name>
 
     <dependencies>
         <dependency>
