@@ -11,7 +11,7 @@
     <groupId>com.opower</groupId>
     <artifactId>problem-002</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Problem XXX:</name>
+    <name>Problem 002: Sum of even-valued Fibonacci numbers under 4 million</name>
 
     <dependencies>
         <dependency>
