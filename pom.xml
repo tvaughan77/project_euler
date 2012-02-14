@@ -23,8 +23,10 @@
     </build>
     <modules>
         <module>scala-parent</module>
+        <module>euler-support</module>
         <module>problem-001</module>
         <module>problem-002</module>
+        <module>problem-003</module>
     </modules>
 
 </project>
