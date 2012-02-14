@@ -69,7 +69,7 @@ EOF
 close(APP);
 
 
-open(TEST, ">$test_dir/AppTest.scala") or die "Could not open AppTest.scala for editing $!";
+open(TEST, ">$test_dir/AppSuite.scala") or die "Could not open AppTest.scala for editing $!";
 print TEST<<EOF;
 package euler.problem$problem_number
 
