@@ -1,6 +1,9 @@
 package euler.problem003
 
 import euler.LogHelper
+import euler.Numbers
+import euler.GrokCode
+import scala.annotation.tailrec
 
 /**
  * <h1>Problem Statement</h1>
@@ -23,49 +26,56 @@ import euler.LogHelper
  */
 object App extends LogHelper {
   private final val TARGET = 600851475143L
-
+  
   def main(args: Array[String]) {
     var number = TARGET
     if(args != null && !args.isEmpty && args(0) != null) {
-      number = args(0).toInt
+      number = args(0).toLong
     }
     
-    info("The largest prime factor of %d is %d", TARGET, largestPrimeFactor(number).getOrElse("No prime factor found!"))
+    //info("The largest prime factor of %d is %d", TARGET, largestPrimeFactor(number).getOrElse("No prime factor found!"))
+    
+    //info("The largest prime factor of %d is %d", TARGET, GrokCode.largestPrimeFactor(number))
+    
+    info("The largest prime factor of %d is %d", TARGET, (largestPrimeFactors(number) max))
   }
   
+  
   /**
+   * After submitting the GrokCode solution to project eueler, I found this solution on the 7th page of problem discussion that
+   * I really like 
+   * @author mdufresne
+   */
+  def largestPrimeFactors(number: Long): List[Long] = {
+    def lpf(i: Long, V: Long): List[Long] = {
+      if (i >= V) List(V) 
+      else if (V % i == 0 && Numbers.isPrime(i)) 
+        i :: lpf(i, V / i) 
+      else lpf(i + 1, V)
+    }
+    
+    lpf(2, number)
+  }
+
+  /**
+   *
+   *  This doesn't work for numbers larger than a couple thousand -- something to do with streams blowing up heap ??
+   *
    * @param number the number to find the largest prime factor for
    * @return an option.  Either .get returns the largest prime factor for {@code number} or else there was an error getting the
    * largest prime factor for {@code number}
-   */
+
   def largestPrimeFactor(number: Long): Option[Long] = {
-    require(number > 0)
-    val primeCandidates = primes((number/2).toLong)
-    info("There are %d primes less than the square root of our target number %d", primeCandidates.length, number)
-   
-    primeCandidates.reverse find (candidate => number % candidate == 0)
+    require(number >= 2)
+    val upperBound = (number/2).toLong + 1
+    
+    // Get all primes less than our upper bound
+    val primes = Numbers.primes(upperBound)
+    info("There are %d primes less than half of our target number (%d / 2 = %d)", primes.size, number, upperBound)
+    
+    // Starting at the highest value prime, find the first prime that evenly divides our number
+    primes.reverse find (candidate => number % candidate == 0)
   }
-  
-  /**
-   * @param the upper limit of numbers to search for primes to
-   * @return a list of all primes less than {@code limit}
-   */
-  def primes(limit: Long): List[Long] = {
-    require(limit > 1)
-    info("Computing primes less than or equal to %d", limit)
-    sievePrimes(List.empty[Long], List.range(2, limit + 1))
-  }
-  
-  /*
-   * I think this implements Euler's sieve since it's modifying the naturalList on each iteration
-   */
-  def sievePrimes(primeList: List[Long], naturalList: List[Long]): List[Long] = {
-    if(naturalList.isEmpty) {
-      primeList.reverse
-    } else {
-      val prime = naturalList.head
-      debug("Found prime %d", prime)
-      sievePrimes(prime :: primeList, naturalList filter (_ % prime != 0))
-    }
-  }
+     */
+
 }

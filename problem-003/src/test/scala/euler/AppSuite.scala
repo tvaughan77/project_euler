@@ -9,9 +9,6 @@ import org.junit.Assert._
 @RunWith(classOf[JUnitRunner])
 class AppSuite extends FunSuite {
 
-  test("List of primes below 10 is (2, 3, 5, 7)") {
-    assertEquals(List(2, 3, 5, 7), App.primes(10))
-  }
   
   test("The greatest prime factor of 100 is 5") {
     assertEquals(5, App.largestPrimeFactor(100).get)
