@@ -27,6 +27,7 @@
         <module>problem-001</module>
         <module>problem-002</module>
         <module>problem-003</module>
+        <module>problem-004</module>
     </modules>
 
 </project>

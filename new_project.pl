@@ -41,6 +41,10 @@ print POM<<EOF;
             <artifactId>scala-library</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.opower</groupId>
+            <artifactId>euler-support</artifactId>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
