@@ -30,6 +30,7 @@
         <module>problem-004</module>
         <module>problem-005</module>
         <module>problem-006</module>
+        <module>problem-007</module>
     </modules>
 
 </project>
