@@ -15,6 +15,9 @@ if(-e $project_name) {
 my $src_dir = "$project_name/src/main/scala/euler";
 `mkdir -p $src_dir`;
 
+my $rsc_dir = "$project_name/src/main/resources";
+`mkdir -p $rsc_dir`;
+
 my $test_dir = "$project_name/src/test/scala/euler";
 `mkdir -p $test_dir`;
 
