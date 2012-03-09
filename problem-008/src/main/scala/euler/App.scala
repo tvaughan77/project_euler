@@ -46,6 +46,10 @@ object App {
   }
   
   /**
+   *
+   * Hey - guess what -- ".product" is already a function on List.  Didn't need to write this at all.
+   *
+   *
    * TODO - enforce that the {@code s} is actually numeric
    * TODOish - enforce the size of the string, and possibly the return type (Int vs. Long) based on allowed size of s
    * @param a string of 5 digit numbers
