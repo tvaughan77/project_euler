@@ -13,4 +13,22 @@ object App {
   def main(args: Array[String]) {
     
   }
+  
+  /**
+   * @param a A natural number (for the definition where "natural" is > 0)
+   * @return a List of all of the pairs of natural numbers that sum to {@code a}
+   * For example, {@code terms2(4)} returns {@code List(List(1, 3), List(2, 2), List(3, 1))}
+   */
+  def terms2(a: Int): List[List[Int]] = {
+    require(a > 0)
+    var termsList = new scala.collection.mutable.ListBuffer[List[Int]]
+    for(i <- 1 until (a)) {
+      termsList += List(i, a - i)
+    }
+    termsList.toList
+  }
+  
+  def isPythagoreanTriplet(a: Int, b: Int, c: Int): Boolean = {
+    ((a * a) + (b * b)) == (c * c)
+  }
 }
