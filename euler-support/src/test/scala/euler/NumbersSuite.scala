@@ -7,7 +7,7 @@ import org.junit.Assert._
 
 
 @RunWith(classOf[JUnitRunner])
-class PrimesSuite extends FunSuite {
+class NumbersSuite extends FunSuite {
 
   test("The first prime number is 2") {
     val first5Primes = Numbers.primes().take(5).toArray
