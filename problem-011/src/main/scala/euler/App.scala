@@ -35,19 +35,54 @@ import scala.io.Source
  * the 20x20 grid?</p>
  */
 object App {
-
+  private final val SIZE = 20
+  private final val ROWS = SIZE
+  private final val COLS = SIZE
+  private final val WINDOW_SIZE = 4
+  
   def main(args: Array[String]) {
     val source = Source.fromInputStream(getClass.getResourceAsStream("data_grid.txt"))
-    val grid = DataGridReader.parseDataGrid(source)
+    val grid = DataGridReader.parseDataGrid(source, ROWS, COLS)
     
     printGrid(grid)
     
+    val greatestRowProduct = computeGreatestRowProduct(grid)
+    
+    print("The greatest row product is " + greatestRowProduct)
+    
+  }
+  
+  /**
+   * Finds the greatest product of four adjacent numbers in an horizontal row
+   */
+  def computeGreatestRowProduct(grid: Array[Array[Int]]): Int = {
+    val greatest = 0
+    computeGreatestProduct(grid(0), WINDOW_SIZE)    // FIXME - left off here
+    
+  }
+  
+  /**
+   * @param data An array of integers
+   * @param window The number of consecutive values in {@code data} to multiply when determining what the greatest such 
+   * span of numbers in the {@code data} is.  The value of {@code window} must be less than or equal to the
+   * length of {@code data}
+   * @return the greatest product of {@code window}-consecutive values found in {@code data}
+   */
+  def computeGreatestProduct(data: Array[Int], window: Int): Int = {
+    require(window < data.size)
+    var greatest = 0
+    for(i <- (0 to (data.size - window))) {
+      val product = data.view.slice(i, i+window).product
+      if(product > greatest) 
+        greatest = product
+    }
+    greatest
   }
   
   def printGrid(grid: Array[Array[Int]]) {
-    for(i <- (0 to 19)) {
-      for(j <- (0 to 19)) {
-        print("%2d ".format(grid(i)(j)))
+    for(i <- (0 to ROWS - 1)) {
+      for(j <- (0 to COLS - 1)) {
+        print("%4d".format(grid(i)(j)))
       }
       print("\n")
     }

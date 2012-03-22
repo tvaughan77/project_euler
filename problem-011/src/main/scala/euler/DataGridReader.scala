@@ -3,21 +3,19 @@ package euler.problem011
 import scala.io.Source
 
 /**
- * 
+ * Parses a rows x cols text file of integers into a 2D array of appropriate size
  */
 object DataGridReader {
 
-  private final val SIZE = 20
-  
   /**
-   * @param source a stream of information (presumably a file containing 20 rows & 20 columns of integers
+   * @param source a stream of information (presumably a file containing rows x cols of integers
    * @return a 2D array of integers, parse from {@code source}
    */
-  def parseDataGrid(source: Source): Array[Array[Int]] = {
+  def parseDataGrid(source: Source, rows: Int, cols: Int): Array[Array[Int]] = {
     
-    var data = new Array[Array[Int]](SIZE)
-    for(i <- (0 to SIZE - 1)) {
-      data(i) = new Array[Int](SIZE)
+    var data = new Array[Array[Int]](rows)
+    for(i <- (0 to rows - 1)) {
+      data(i) = new Array[Int](cols)
     }
     
     var row = 0
