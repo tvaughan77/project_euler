@@ -14,6 +14,24 @@ package euler.problem009
  * It's also inefficient to test (a, b, c) and (b, a, c)<br/>
  * 
  * </p>
+ * 
+ * <p>Sigh...looks at this sick solution I found on the boards after submitting mine.  Nice:
+ *
+ object P9 {
+  def main(args:Array[String]) {
+    val l = for{
+      a <- 1 to 1000
+      b <- 1 to 1000
+      if a < b 
+      c <- 1 to 1000
+      if a + b + c == 1000
+      if a * a + b * b == c * c 
+    } yield (a, b, c)
+    println(l)
+    val (a, b, c) = l.head
+    println(a * b * c)
+  }
+}
  */
 object App {
 
