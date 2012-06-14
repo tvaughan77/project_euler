@@ -45,15 +45,16 @@ object App {
     val source = Source.fromInputStream(getClass.getResourceAsStream("data_grid.txt"))
     val grid = GridOperations.parseDataGrid(source, ROWS, COLS)
     
-    printGrid(grid)
+    GridOperations.printGrid(grid)
     
     val greatestRowProduct = computeGreatestRowProduct(grid, WINDOW_SIZE)
     val greatestColProduct = computeGreatestRowProduct(GridOperations.invert(grid), WINDOW_SIZE)
-    val greatestDiagProduct = computeGreatestDiagProduct(grid, WINDOW_SIZE)
+    val greatestLeftDiagProduct = computeGreatestDiagProduct(grid, WINDOW_SIZE)
+    val greatestRightDiagProduct = computeGreatestDiagProduct(GridOperations.rotate(grid), WINDOW_SIZE)
     
     println("The greatest row  product is " + greatestRowProduct)
     println("The greatest col  product is " + greatestColProduct)
-    println("The greatest diag product is " + greatestDiagProduct)
+    println("The greatest diag product is " + greatestLeftDiagProduct)
   }
   
   /**
@@ -68,7 +69,7 @@ object App {
     
     val row = 0
     for(row <- 0 until grid.size) {
-      val diagonal = returnDiagonal(grid, row, 0)
+      val diagonal = GridOperations.diagonal(grid, row, 0)
       if(diagonal.size >= window) {
         val current = computeGreatestProduct(diagonal, window)
         if(current > greatest) {
@@ -79,7 +80,7 @@ object App {
   
     val col = 0
     for(col <- 0 until grid(0).size) {
-      val diagonal = returnDiagonal(grid, 0, col)
+      val diagonal = GridOperations.diagonal(grid, 0, col)
       if(diagonal.size >= window) {
         val current = computeGreatestProduct(diagonal, window)
         if(current > greatest) {
@@ -92,28 +93,7 @@ object App {
     greatest
   }
   
-  /**
-   * @param grid a 2D array
-   * @param x the starting column
-   * @param y the starting row
-   * @return the numbers along the diagonal of the grid starting from (x, y) and going "down and to the right"
-   */
-  def returnDiagonal(grid: Array[Array[Int]], startRow: Int, startCol: Int): Array[Int] = {
-    require(startRow < grid.size)
-    require(startCol < grid(0).size)
-    
-    var diagonal = new scala.collection.mutable.ListBuffer[Int]
-    
-    var row = startRow
-    var col = startCol
-    while(row < grid.size && col < grid(0).size) {
-      diagonal += grid(row)(col)
-      row = row + 1
-      col = col + 1
-    }
-    
-    diagonal.toArray
-  }
+
   
   /**
    * Finds the greatest product of four adjacent numbers in an horizontal row
@@ -149,12 +129,5 @@ object App {
     greatest
   }
   
-  def printGrid(grid: Array[Array[Int]]) {
-    for(i <- (0 to ROWS - 1)) {
-      for(j <- (0 to COLS - 1)) {
-        print("%4d".format(grid(i)(j)))
-      }
-      print("\n")
-    }
-  }
+
 }

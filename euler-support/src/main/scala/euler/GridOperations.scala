@@ -72,6 +72,29 @@ object GridOperations {
   }
   
   /**
+   * @param grid a 2D array
+   * @param x the starting column
+   * @param y the starting row
+   * @return the numbers along the diagonal of the grid starting from (x, y) and going "down and to the right"
+   */
+  def diagonal(grid: Array[Array[Int]], startRow: Int, startCol: Int): Array[Int] = {
+    require(startRow < grid.size)
+    require(startCol < grid(0).size)
+    
+    var data = new scala.collection.mutable.ListBuffer[Int]
+    
+    var row = startRow
+    var col = startCol
+    while(row < grid.size && col < grid(0).size) {
+      data += grid(row)(col)
+      row = row + 1
+      col = col + 1
+    }
+    
+    data.toArray
+  }
+  
+  /**
    * <p>Spits out the contents of {@code grid} to stdout
    * @param grid a 2D array
    */
