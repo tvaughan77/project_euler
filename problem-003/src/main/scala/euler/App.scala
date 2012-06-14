@@ -59,12 +59,12 @@ object App extends LogHelper {
 
   /**
    *
-   *  This doesn't work for numbers larger than a couple thousand -- something to do with streams blowing up heap ??
+   * FIXME: This doesn't work for numbers larger than a couple thousand -- something to do with streams blowing up heap ??
    *
    * @param number the number to find the largest prime factor for
    * @return an option.  Either .get returns the largest prime factor for {@code number} or else there was an error getting the
    * largest prime factor for {@code number}
-
+   */
   def largestPrimeFactor(number: Long): Option[Long] = {
     require(number >= 2)
     val upperBound = (number/2).toLong + 1
@@ -76,6 +76,6 @@ object App extends LogHelper {
     // Starting at the highest value prime, find the first prime that evenly divides our number
     primes.reverse find (candidate => number % candidate == 0)
   }
-     */
+     
 
 }
