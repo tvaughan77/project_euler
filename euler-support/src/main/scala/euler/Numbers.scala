@@ -1,5 +1,7 @@
 package euler
 
+import scala.collection.mutable.ListBuffer
+
 /**
  * Helper class dealing with Natural numbers, Primes, etc.
  */
@@ -48,5 +50,22 @@ object Numbers {
     else 
       isp(i+1)
     isp(2)
+  }
+  
+  /**
+   * TODO - this is brute-force and isn't optimized with any dynamic programming techniques
+   * @param n a number to find the factors for
+   * @return the list of factors of {@code n}
+   */
+  def factor(n: Long): List[Long] = {    // note: using a Long here prevents us from doing Ranges and filters (I think)
+    require(n > 0)
+    val factors = new ListBuffer[Long]
+    var i = 1
+    while(i <= n) {
+      if(n % i == 0)
+        factors += i
+      i = i + 1
+    }
+    factors.toList
   }
 }

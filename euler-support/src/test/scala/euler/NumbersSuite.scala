@@ -36,4 +36,25 @@ class NumbersSuite extends FunSuite {
     assertTrue(Numbers.isPrime(5))
     assertFalse(Numbers.isPrime(10000000))
   }
+  
+  test("the Factors of 6 are (1, 2, 3, 6)") {
+    val factors = Numbers.factor(6)
+    assertEquals(4, factors.size)
+    assertEquals(1, factors(0))
+    assertEquals(2, factors(1))
+    assertEquals(3, factors(2))
+    assertEquals(6, factors(3))
+  }
+  
+  test("Trying to factor a negative number throws an exception") {
+    intercept[IllegalArgumentException] {
+      Numbers.factor(-5)
+    }
+  }
+  
+  test("Trying to factor zero throws an exception") {
+    intercept[IllegalArgumentException] {
+      Numbers.factor(0)
+    }
+  }
 }
