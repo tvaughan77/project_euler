@@ -32,7 +32,7 @@ object GridOperations {
    */
   def initialize(rows: Int, cols: Int): Array[Array[Int]] = {
     var data = new Array[Array[Int]](rows)
-    for(i <- (0 to rows - 1)) {
+    for(i <- 0 until rows) {
       data(i) = new Array[Int](cols)
     }
     data
@@ -48,10 +48,39 @@ object GridOperations {
     
     val invertedGrid = initialize(gridCols, gridRows)
     
-    for(i <- (0 to gridRows - 1))
-      for(j <- (0 to gridCols - 1))
+    for(i <- 0 until gridRows)
+      for(j <- 0 until gridCols)
         invertedGrid(j)(i) = grid(i)(j)
     
     invertedGrid
+  }
+  
+  /**
+   * @param grid a 2D array
+   * @return the {@code grid}, rotated 90 degrees counterclockwise. E.g., [[1 2] [3 4]] becomes [[2 4] [1 3]]
+   */
+  def rotate(grid: Array[Array[Int]]): Array[Array[Int]] = {
+    val gridRows = grid.size
+    val gridCols = grid(0).size
+    
+    val rotatedGrid = initialize(gridCols, gridRows)
+    for(i <- 0 until gridRows)
+      for(j <- 0 until gridCols)
+        rotatedGrid(gridCols - j - 1)(i) = grid(i)(j)
+
+    rotatedGrid
+  }
+  
+  /**
+   * <p>Spits out the contents of {@code grid} to stdout
+   * @param grid a 2D array
+   */
+  def printGrid(grid: Array[Array[Int]]) {
+    for(i <- 0 until grid.size) {
+      for(j <- 0 until grid(0).size) {
+        print("%4d".format(grid(i)(j)))
+      }
+      print("\n")
+    }
   }
 }
