@@ -54,7 +54,8 @@ object App {
     
     println("The greatest row  product is " + greatestRowProduct)
     println("The greatest col  product is " + greatestColProduct)
-    println("The greatest diag product is " + greatestLeftDiagProduct)
+    println("The greatest left diag product is " + greatestLeftDiagProduct)
+    println("The greatest right diag product is " + greatestRightDiagProduct)
   }
   
   /**
