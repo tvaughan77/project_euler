@@ -1,5 +1,6 @@
 package euler.problem011
 
+import euler.GridOperations
 import scala.io.Source
 
 
@@ -42,23 +43,92 @@ object App {
   
   def main(args: Array[String]) {
     val source = Source.fromInputStream(getClass.getResourceAsStream("data_grid.txt"))
-    val grid = DataGridReader.parseDataGrid(source, ROWS, COLS)
+    val grid = GridOperations.parseDataGrid(source, ROWS, COLS)
     
     printGrid(grid)
     
-    val greatestRowProduct = computeGreatestRowProduct(grid)
+    val greatestRowProduct = computeGreatestRowProduct(grid, WINDOW_SIZE)
+    val greatestColProduct = computeGreatestRowProduct(GridOperations.invert(grid), WINDOW_SIZE)
+    val greatestDiagProduct = computeGreatestDiagProduct(grid, WINDOW_SIZE)
     
-    print("The greatest row product is " + greatestRowProduct)
+    println("The greatest row  product is " + greatestRowProduct)
+    println("The greatest col  product is " + greatestColProduct)
+    println("The greatest diag product is " + greatestDiagProduct)
+  }
+  
+  /**
+   * <p>This implementation walks across the top of a 2D matrix, getting each diagonal and finding the greatest product,
+   * then walks down the left side of a 2D matrix, finding the greatest product along its diagonals.</p>
+   * @param grid a 2D array
+   * @param window the number of consecutive elements to multiple together when figuring out the greatest product
+   * @return the greatest product of {@code window} consecutive diagnoal numbers in {@code grid}
+   */  
+  def computeGreatestDiagProduct(grid: Array[Array[Int]], window:Int): Int = {
+    var greatest = 0
     
+    val row = 0
+    for(row <- 0 until grid.size) {
+      val diagonal = returnDiagonal(grid, row, 0)
+      if(diagonal.size >= window) {
+        val current = computeGreatestProduct(diagonal, window)
+        if(current > greatest) {
+          greatest = current
+        }
+      }
+    }
+  
+    val col = 0
+    for(col <- 0 until grid(0).size) {
+      val diagonal = returnDiagonal(grid, 0, col)
+      if(diagonal.size >= window) {
+        val current = computeGreatestProduct(diagonal, window)
+        if(current > greatest) {
+          greatest = current
+        }
+      }
+    }
+    
+    
+    greatest
+  }
+  
+  /**
+   * @param grid a 2D array
+   * @param x the starting column
+   * @param y the starting row
+   * @return the numbers along the diagonal of the grid starting from (x, y) and going "down and to the right"
+   */
+  def returnDiagonal(grid: Array[Array[Int]], startRow: Int, startCol: Int): Array[Int] = {
+    require(startRow < grid.size)
+    require(startCol < grid(0).size)
+    
+    var diagonal = new scala.collection.mutable.ListBuffer[Int]
+    
+    var row = startRow
+    var col = startCol
+    while(row < grid.size && col < grid(0).size) {
+      diagonal += grid(row)(col)
+      row = row + 1
+      col = col + 1
+    }
+    
+    diagonal.toArray
   }
   
   /**
    * Finds the greatest product of four adjacent numbers in an horizontal row
+   * @param grid a 2D array
+   * @param window the number of consecutive numbers to multiply together when figuring out the greatest product
+   * @return the greatest product of {@code window} consecutive numbers in any row in {@code grid}
    */
-  def computeGreatestRowProduct(grid: Array[Array[Int]]): Int = {
-    val greatest = 0
-    computeGreatestProduct(grid(0), WINDOW_SIZE)    // FIXME - left off here
-    
+  def computeGreatestRowProduct(grid: Array[Array[Int]], window: Int): Int = {
+    var greatest = 0
+    for(i <- (0 to grid.size -1)) {
+      val current = computeGreatestProduct(grid(i), window)
+      if(current > greatest)
+        greatest = current
+    }
+    greatest
   }
   
   /**
@@ -69,7 +139,7 @@ object App {
    * @return the greatest product of {@code window}-consecutive values found in {@code data}
    */
   def computeGreatestProduct(data: Array[Int], window: Int): Int = {
-    require(window < data.size)
+    require(window <= data.size)
     var greatest = 0
     for(i <- (0 to (data.size - window))) {
       val product = data.view.slice(i, i+window).product
