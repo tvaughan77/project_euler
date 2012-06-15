@@ -100,10 +100,31 @@ object GridOperations {
    */
   def printGrid(grid: Array[Array[Int]]) {
     for(i <- 0 until grid.size) {
-      for(j <- 0 until grid(0).size) {
-        print("%4d".format(grid(i)(j)))
-      }
-      print("\n")
+      printArray(grid(i))
     }
+  }
+  
+  def printArray(array: Array[Int]) {
+    for(i <- 0 until array.size) {
+      print("%4d".format(array(i)))
+    }
+    print("\n")    
+  }
+  
+  /**
+   * @param grid a 2D array of numbers
+   * @return a single array (same width as {@code grid}) that contains the sum of all the values in the 2D input.
+   * For example, the 0th index of the return array is the sum of the 0th elements of all the rows in the grid.  
+   * 10's digits do not "carry over", you need to do that yourself.
+   */
+  def sumGrid(grid: Array[Array[Int]]): Array[Int] = {
+    val sum = new Array[Int](grid(0).size)
+    
+    for(i <- 0 until grid.size) {
+      for(j <- 0 until grid(0).size) {
+        sum(j) = sum(j) + grid(i)(j)
+      }
+    }  
+    sum
   }
 }

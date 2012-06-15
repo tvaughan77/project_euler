@@ -115,5 +115,11 @@ class GridOperationsSuite extends FunSuite {
     assertEquals(13, diagonal(0))
   }
   
-  
+  test("The sumGrid sum operation works") {
+    val sum = GridOperations.sumGrid(testSquareArray)
+    assertEquals(3, sum.length)
+    assertEquals(12, sum(0))
+    assertEquals(15, sum(1))
+    assertEquals(18, sum(2))
+  }
 }
