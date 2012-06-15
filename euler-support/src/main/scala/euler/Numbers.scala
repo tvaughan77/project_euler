@@ -61,7 +61,7 @@ object Numbers {
     require(n > 0)
     val factors = new ListBuffer[Long]
     var i = 1
-    while(i <= n) {
+    while(i <= n) {   // FIXME - only need to go up to n/2 here
       if(n % i == 0)
         factors += i
       i = i + 1
