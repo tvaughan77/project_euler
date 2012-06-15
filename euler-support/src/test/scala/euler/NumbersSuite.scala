@@ -57,4 +57,8 @@ class NumbersSuite extends FunSuite {
       Numbers.factor(0)
     }
   }
+  
+  test("There are 576 factors of the number 76576500") {
+    assertEquals(576, Numbers.factor(76576500).size)
+  }
 }
