@@ -60,13 +60,15 @@ print POM<<EOF;
 EOF
 close(POM);
 
-open(APP, ">$src_dir/App.scala") or die "COuld not open App.scala for editing $!";
+open(APP, ">$src_dir/App.scala") or die "Could not open App.scala for editing $!";
 print APP<<EOF;
 package euler.problem$problem_number
 
+import euler.LogHelper
+
 /**
  */
-object App {
+object App extends LogHelper {
 
   def main(args: Array[String]) {
 
@@ -97,6 +99,54 @@ class AppSuite extends FunSuite {
 
 EOF
 close(TEST);
+
+
+open(NBACTIONS, ">$project_name/nbactions.xml") or die "Could not open nbactions.xml for editing $!";
+print NBACTIONS<<EOF;
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>run</actionName>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2:exec</goal>
+            </goals>
+            <properties>
+                <exec.classpathScope>runtime</exec.classpathScope>
+                <exec.args>-classpath \%classpath euler.problem${problem_number}.App</exec.args>
+                <exec.executable>java</exec.executable>
+            </properties>
+        </action>
+        <action>
+            <actionName>debug</actionName>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.2:exec</goal>
+            </goals>
+            <properties>
+                <exec.classpathScope>runtime</exec.classpathScope>
+                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=\${jpda.address} -classpath \%classpath euler.problem${problem_number}.App</exec.args>
+                <jpda.listen>true</jpda.listen>
+                <exec.executable>java</exec.executable>
+            </properties>
+        </action>
+        <action>
+            <actionName>profile</actionName>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.1.1:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>\${profiler.args} -classpath \%classpath euler.problem${problem_number}.App</exec.args>
+                <profiler.action>profile</profiler.action>
+                <exec.executable>\${profiler.java}</exec.executable>
+            </properties>
+        </action>
+</actions>
+
+EOF
+close(NBACTIONS);
+
 
 print "Created new project: $project_name\n";
 
