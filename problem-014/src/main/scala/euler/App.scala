@@ -2,9 +2,10 @@ package euler.problem014
 
 import euler.LogHelper
 import scala.collection.mutable.HashMap
+import scala.collection.mutable.ListBuffer
 
 /**
- * <p>The following iterative sequence is defined for the set of positive integers:<br/>
+ * <p>The following iterative sequence is defined for the set of positive Longegers:<br/>
  * 
  * n --> n/2 (n is even)    <br/>
  * n --> 3n + 1 (n is odd)  <br/>
@@ -22,34 +23,29 @@ import scala.collection.mutable.HashMap
 object App extends LogHelper {
   
   val limit = 1000000
-  val cache = new HashMap[Int, List[Int]]
 
   def main(args: Array[String]) {
     
     var longestChain = 0
     
     for(i <- 1 to limit) {
-      try {
-        val size = chain(i).size
-        if(size > longestChain) {
-          info("New longest chain (%d) discovered by running number %d", size, i)
-          longestChain = size
-        }
-      } catch {
-        case ex: StackOverflowError => error("StackOverflowError caused by getting chain for " + i)
+      val size = chain(i).size
+      if(size > longestChain) {
+        info("New longest chain (%d) discovered by running number %d", size, i)
+        longestChain = size
       }
     }
   }
   
-  def chain(x: Int): List[Int] = {
+  /**
+   * @param x - a number to get a Collatz chain for
+   * @return the Collatz chain for the number {@param x}
+   */
+  def chain(x: Long): List[Long] = {
     require(x > 0)
     
-    def computeChain(x: Int): List[Int] = {
-      if(cache.isDefinedAt(x)) {
-        debug("computeChain hit cache for number %d", x)
-        cache(x)
-      }
-      else if(x == 1) 
+    def computeChain(x: Long): List[Long] = {
+      if(x == 1) 
         List(1)
       else if(x % 2 == 0) 
         x :: computeChain(x / 2)
@@ -58,9 +54,28 @@ object App extends LogHelper {
 
     }
     
-    debug("Computing chain for %d", x)    
-    if(!cache.isDefinedAt(x)) 
-      cache(x) = computeChain(x)
-    cache(x)
+    computeChain(x)
+  }
+  
+  
+  
+  /**
+   * Iterative version of the recursive chain solution
+   * (unused - helped me find out I was blowing over the Int limit into negative territory)
+   */
+  def chain2(x: Long): List[Long] = {
+    require(x > 0)
+    var num = x
+    var chain = new ListBuffer[Long]
+    while(num != 1) {
+      println("num = " + num + " and chain size is " + chain.size)
+      chain += num
+      if(num % 2 == 0)
+        num = num / 2
+      else 
+        num = 3 * num + 1
+    }
+    chain += 1
+    chain.toList
   }
 }

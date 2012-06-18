@@ -13,14 +13,9 @@ class AppSuite extends FunSuite {
     assertEquals(List(13, 40, 20, 10, 5, 16, 8, 4, 2, 1), App.chain(13))
   }
   
-  test("Cache should be hit") {
-    assertEquals(List(8, 4, 2, 1), App.chain(8))
-    assertEquals(List(16, 8, 4, 2, 1), App.chain(16))   // I should see this hit the cache
-  }
-  
   test("Why does this hit a stack overflow error") {
-    val chain = App.chain(60415)
-    println("The chain for 60415 is " + chain)
+    val chain = App.chain(113383)
+    println("The chain for 113383 is " + chain)
   }
 }
 
