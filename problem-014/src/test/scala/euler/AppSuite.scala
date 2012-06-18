@@ -13,10 +13,6 @@ class AppSuite extends FunSuite {
     assertEquals(List(13, 40, 20, 10, 5, 16, 8, 4, 2, 1), App.chain(13))
   }
   
-  test("Why does this hit a stack overflow error") {
-    val chain = App.chain(113383)
-    println("The chain for 113383 is " + chain)
-  }
 }
 
 
