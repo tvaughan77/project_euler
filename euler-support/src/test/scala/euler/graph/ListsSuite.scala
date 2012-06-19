@@ -7,7 +7,7 @@ import org.junit.Assert._
 
 
 @RunWith(classOf[JUnitRunner])
-class ListsSuite extends FunSuite {
+class ListssSuite extends FunSuite {
 
   val tier1 = List("A")
   val tier2 = List("B", "C")
