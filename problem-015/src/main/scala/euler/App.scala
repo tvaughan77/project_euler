@@ -1,7 +1,6 @@
 package euler.problem015
 
 import euler.LogHelper
-import euler.graph._
 import scala.io.Source
 
 /**
@@ -12,50 +11,91 @@ import scala.io.Source
 object App extends LogHelper {
   
   /** 
-   * If you draw out the verticies of a grid and rotate the grid 45 degrees to make it look like 
-   * a diamond (to achieve the "without backtracking" effect), it's clear that for an NxN grid there
-   * are N+1 verticies across the fattest part of the diamond (the original diagonal).
+   * <p>This problem demands some dynamic programming by building up an understanding of how many paths
+   * exist from some Vertex to the bottom-right corner.  This algorithm will work because of the
+   * constraint we're given that one can only go "down" or "right".</p>
    * 
-   * So for a 2x2 grid, there are 3x3 verticies, rotated like a diamond looks like this:
+   * <p>Consider a grid like:<br/>
+   * <pre>
+   *      a         b         c
+   *      
+   *      d         e         f
+   *      
+   *      g         h         i
+   * </pre>
+   * </p>
    * 
-   *              A            tier 1
-   *           B     C         tier 2
-   *        D     E     F      tier 3
-   *           G     H         tier 4
-   *              I            tier 5
-   *              
-   * We want to know how many distinct paths lead from vertex (A) to vertex (I).
+   * <p>We know that there is just 1 way to get from h->i and just 1 way to get from f->i, which we can annotate
+   * like:<br/>
+   * <pre>
+   *      a         b         c
+   *      
+   *      d         e         f[1]
+   *      
+   *      g         h[1]      i
+   * </pre> 
+   * </p>
    * 
-   * Because we can't use straight permutations (i.e. there's no path from B-->F), we'll use a modified
-   * depth-first-search approach:
-   *  - start a stack with List(A) and a list of finished routes with List()
-   *  - while stack is not empty,
-   *  -- pop stack
-   *  -- find last element of popped element
-   *  -- if there are any routes from the last element, 
-   *  --- create new lists with those routes and push back on to stack
-   *  -- else
-   *  --- move the popped element to the "finished routes" List
+   * <p>When considering vertex "e", we note that we can get to "i" either by going down through h or by going
+   * right through f.  That's 2 possible paths, which happens to be the sum of h[1] + f[1] = e[2].  Filling in
+   * the rest of the grid with that logic shows me that I'm on the right path:<br/>
+   * <pre>
+   *      a[6]      b[3]      c[1]
+   *      
+   *      d[3]      e[2]      f[1]
+   *      
+   *      g[1]      h[1]      i
+   * </pre> 
+   * </p>
+   * <p>As expected, there are 6 ways to get from node "a" to node "i" 
+   * 
    */
   def main(args: Array[String]) {
+    val dim = 20
+    println("The number of paths in a " + dim + "x" + dim + " square is = " + numberOfPaths(dim+1))
+  }
+ 
+
+  /**
+   * @param dim the dimensions of a square for which we're asking "How many paths are there from the top left
+   * to the bottom right, without going up or left?"
+   * @return the number of distinct such paths
+   */ 
+  def numberOfPaths(dim: Int): Double = {
+     val grid = initializeGrid(dim)
      
-//    val graph = Graph.loadFromResource(Source.fromInputStream(getClass.getResourceAsStream("graph_3x3.txt")))
-//
-//    val verticiesFrom = graph.verticiesFrom(Vertex("r1c1"))
-//    
-//    println("The verticies from r1c1 are" + verticiesFrom)
-//    
-//    val paths = graph.distinctPaths(Vertex("r1c1"))
-//
-//    println("The distinct paths from r1c1 are:\n" + paths + "\n")
-//    
-//    val answer = graph.distinctPaths(Vertex("r1c1")).size
-//    println("According to this, there are " + answer + " distinct paths in a 3x3 grid, without backtracking")
-//
-    val graph = Graph.loadFromResource(Source.fromInputStream(getClass.getResourceAsStream("graph_21x21.txt")))
-
-    val answer = graph.distinctPaths(Vertex("r10c10")).size
-
-    println("According to this, there are " + answer + " distinct paths in a 20x20 grid, without backtracking")
+     for(row <- (dim - 2) to 0 by -1) {
+       for(col <- (dim - 2) to 0 by -1) {
+         grid(row)(col) = grid(row + 1)(col) + grid(row)(col + 1)
+       }
+     }
+     
+     grid(0)(0)
+  } 
+ 
+  /**
+   * FIXME - replace the first initialization part of this method with a parameterized GridOperations method
+   * @param dim the dimensions (x & y) of the square grid to initialize
+   * @return a 2-D array of Doubles of size dim by dim.  For this problem, we initialize the bottom
+   * row and right column with "1"s and everything else with "0"s.  The bottom right corner is "0" which
+   * reflects the notion that there's no way starting at the bottom right to travel across a down- or 
+   * right- edge to itself.
+   */
+  private def initializeGrid(dim: Int): Array[Array[Double]] = {
+    var grid = new Array[Array[Double]](dim)
+    for(i <- 0 until dim) {
+      grid(i) = new Array[Double](dim)
+    }
+    
+    // Every vertex along the bottom of the grid has just 1 path to the bottom right corner (straight right)
+    // And every vertex along the right side of the grid has just 1 path to the bottom right corner (straight down)
+    for(i <- 0 until dim) {
+      grid(dim - 1)(i) = 1
+      grid(i)(dim - 1) = 1
+    }
+    // But the bottom right corner shouldn't have any paths to itself
+    grid(dim - 1)(dim - 1) = 0
+    
+    grid
   }
 }
