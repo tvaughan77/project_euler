@@ -38,6 +38,12 @@ class GraphSuite extends FunSuite {
     graph.checkConsistency    
   }
   
+  test("Loading a graph with multicharacter vertex names still parses them correctly") {
+    val graph = Graph.loadFromResource(Source.fromInputStream(getClass.getResourceAsStream("2x2_graph_multichar_vertex.txt")))
+    assertTrue(graph.verticies.contains(Vertex("R1C1")))
+    assertTrue(graph.edges.contains(Edge("R2C1 -> R2C2", Vertex("R2C1"), Vertex("R2C2"))))
+  }
+  
   test("Graph.checkConsistency fails when an edge mentioned a v1 vertex that isn't in graph.verticies") {
     val graph = Graph.mock().addEdge(Edge("v5 -> v1", Vertex("E"), Vertex("A")))
     intercept[IllegalStateException] {

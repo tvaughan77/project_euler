@@ -79,7 +79,7 @@ object Graph extends LogHelper {
    * @throws IllegalStateException if an edge is found that references a vertex not mentioned
    */
   def loadFromResource(source: Source): Graph = {
-    val regex = """(\w)+ -> (\w)+$""".r
+    val regex = """(.+) -> (.+)$""".r
     var graph = new Graph(Set.empty[Vertex], Set.empty[Edge])
 
     for(line <- source.getLines) {
