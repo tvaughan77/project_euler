@@ -91,10 +91,10 @@ class GraphSuite extends FunSuite {
     val distinctPaths = graph.distinctPaths(Vertex("A"))
     assertEquals(20, distinctPaths.size)
   }
-
+  
   // Use this to produce a text file that's parseable by Graph.loadFromResource  
-  test("I am able to write a file") {
-    val dim = 3
-    Graph.createGraphFile("graph_" + dim + "x" + dim + ".txt", dim)
-  }
+//  test("I am able to write a file") {
+//    val dim = 3
+//    Graph.createGraphFile("graph_" + dim + "x" + dim + ".txt", dim)
+//  }
 }

@@ -42,6 +42,8 @@ case class Graph private(verticies: Set[Vertex], edges: Set[Edge]) extends LogHe
   
   /**
    * TODO - prevent infinite loops when cycles happen
+   * FIXME - this brute force approach is all but un-runnable with grids larger than 10x10
+   * 
    * @param v a starting vertex
    * @return a set of all paths from {@code v} through the graph
    */

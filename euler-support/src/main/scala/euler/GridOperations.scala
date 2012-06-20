@@ -6,6 +6,7 @@ import scala.io.Source
  * Provides some common operations for working with 2D grids.
  * 
  * // FIXME - abstract the data type from just "Int"
+ * // FIXME - update problem015's grid initialization code to take advantage of this, once parameterized
  */
 object GridOperations {
 
