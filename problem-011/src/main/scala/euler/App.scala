@@ -45,12 +45,12 @@ object App {
     val source = Source.fromInputStream(getClass.getResourceAsStream("data_grid.txt"))
     val grid = GridOperations.parseDataGrid(source, ROWS, COLS)
     
-    GridOperations.printGrid(grid)
+    GridOperations.printGrid[Int](grid)
     
     val greatestRowProduct = computeGreatestRowProduct(grid, WINDOW_SIZE)
-    val greatestColProduct = computeGreatestRowProduct(GridOperations.invert(grid), WINDOW_SIZE)
+    val greatestColProduct = computeGreatestRowProduct(GridOperations.invert[Int](grid), WINDOW_SIZE)
     val greatestLeftDiagProduct = computeGreatestDiagProduct(grid, WINDOW_SIZE)
-    val greatestRightDiagProduct = computeGreatestDiagProduct(GridOperations.rotate(grid), WINDOW_SIZE)
+    val greatestRightDiagProduct = computeGreatestDiagProduct(GridOperations.rotate[Int](grid), WINDOW_SIZE)
     
     println("The greatest row  product is " + greatestRowProduct)
     println("The greatest col  product is " + greatestColProduct)
@@ -70,7 +70,7 @@ object App {
     
     val row = 0
     for(row <- 0 until grid.size) {
-      val diagonal = GridOperations.diagonal(grid, row, 0)
+      val diagonal = GridOperations.diagonal[Int](grid, row, 0)
       if(diagonal.size >= window) {
         val current = computeGreatestProduct(diagonal, window)
         if(current > greatest) {

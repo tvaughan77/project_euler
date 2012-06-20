@@ -4,18 +4,16 @@ import scala.io.Source
 
 /**
  * Provides some common operations for working with 2D grids.
- * 
- * // FIXME - abstract the data type from just "Int"
- * // FIXME - update problem015's grid initialization code to take advantage of this, once parameterized
  */
 object GridOperations {
 
   /**
+   * // FIXME - how do I parameterize this with the hiccup caused by "map (_.toInt)" ?
    * @param source a stream of information (presumably a file containing rows x cols of integers
    * @return a 2D array of integers, parse from {@code source}
    */
   def parseDataGrid(source: Source, rows: Int, cols: Int): Array[Array[Int]] = {
-    var data = initialize(rows, cols)
+    var data = initialize[Int](rows, cols)
     
     var row = 0
     for(line <- source.getLines) {
@@ -31,10 +29,10 @@ object GridOperations {
    * @param cols how many cols in the grid
    * @return a new 2D array of size {@code rows} x {@code cols}, initialized to the default value of the data type of the grid
    */
-  def initialize(rows: Int, cols: Int): Array[Array[Int]] = {
-    var data = new Array[Array[Int]](rows)
+  def initialize[T](rows: Int, cols: Int)(implicit m: ClassManifest[T]): Array[Array[T]] = {
+    var data = new Array[Array[T]](rows)
     for(i <- 0 until rows) {
-      data(i) = new Array[Int](cols)
+      data(i) = new Array[T](cols)
     }
     data
   }
@@ -43,11 +41,11 @@ object GridOperations {
    * @param grid a 2D array
    * @return the {@code grid}, inverted such that what was in grid[x][y] is now in grid[y][x]
    */
-  def invert(grid: Array[Array[Int]]): Array[Array[Int]] = {
+  def invert[T](grid: Array[Array[T]])(implicit m: ClassManifest[T]): Array[Array[T]] = {
     val gridRows = grid.size
     val gridCols = grid(0).size
     
-    val invertedGrid = initialize(gridCols, gridRows)
+    val invertedGrid = initialize[T](gridCols, gridRows)
     
     for(i <- 0 until gridRows)
       for(j <- 0 until gridCols)
@@ -60,11 +58,11 @@ object GridOperations {
    * @param grid a 2D array
    * @return the {@code grid}, rotated 90 degrees counterclockwise. E.g., [[1 2] [3 4]] becomes [[2 4] [1 3]]
    */
-  def rotate(grid: Array[Array[Int]]): Array[Array[Int]] = {
+  def rotate[T](grid: Array[Array[T]])(implicit m: ClassManifest[T]): Array[Array[T]] = {
     val gridRows = grid.size
     val gridCols = grid(0).size
     
-    val rotatedGrid = initialize(gridCols, gridRows)
+    val rotatedGrid = initialize[T](gridCols, gridRows)
     for(i <- 0 until gridRows)
       for(j <- 0 until gridCols)
         rotatedGrid(gridCols - j - 1)(i) = grid(i)(j)
@@ -78,11 +76,11 @@ object GridOperations {
    * @param y the starting row
    * @return the numbers along the diagonal of the grid starting from (x, y) and going "down and to the right"
    */
-  def diagonal(grid: Array[Array[Int]], startRow: Int, startCol: Int): Array[Int] = {
+  def diagonal[T](grid: Array[Array[T]], startRow: Int, startCol: Int)(implicit m: ClassManifest[T]): Array[T] = {
     require(startRow < grid.size)
     require(startCol < grid(0).size)
     
-    var data = new scala.collection.mutable.ListBuffer[Int]
+    var data = new scala.collection.mutable.ListBuffer[T]
     
     var row = startRow
     var col = startCol
@@ -99,15 +97,15 @@ object GridOperations {
    * <p>Spits out the contents of {@code grid} to stdout
    * @param grid a 2D array
    */
-  def printGrid(grid: Array[Array[Int]]) {
+  def printGrid[T](grid: Array[Array[T]]) {
     for(i <- 0 until grid.size) {
       printArray(grid(i))
     }
   }
   
-  def printArray(array: Array[Int]) {
+  def printArray[T](array: Array[T]) {
     for(i <- 0 until array.size) {
-      print("%4d".format(array(i)))
+      print(array(i) + " ")
     }
     print("\n")    
   }
@@ -118,12 +116,12 @@ object GridOperations {
    * For example, the 0th index of the return array is the sum of the 0th elements of all the rows in the grid.  
    * 10's digits do not "carry over", you need to do that yourself.
    */
-  def sumGrid(grid: Array[Array[Int]]): Array[Int] = {
-    val sum = new Array[Int](grid(0).size)
+  def sumGrid[T](grid: Array[Array[T]])(implicit m: ClassManifest[T], num: Numeric[T]): Array[T] = {
+    val sum = new Array[T](grid(0).size)
     
     for(i <- 0 until grid.size) {
       for(j <- 0 until grid(0).size) {
-        sum(j) = sum(j) + grid(i)(j)
+        sum(j) = num.plus(sum(j), grid(i)(j))
       }
     }  
     sum

@@ -15,7 +15,7 @@ object App {
 
   def main(args: Array[String]) {
     val source = Source.fromInputStream(getClass.getResourceAsStream("numbers.txt"))
-    val data = GridOperations.initialize(numberOfNumbers, widthOfNumbers)
+    val data = GridOperations.initialize[Int](numberOfNumbers, widthOfNumbers)
     
     var row = 0
     for(line <- source.getLines) {
@@ -24,12 +24,12 @@ object App {
       println("row " + row + " is '" + line + "'")
     }
     
-    val sum = GridOperations.sumGrid(data)
+    val sum = GridOperations.sumGrid[Int](data)
     
     
-    GridOperations.printGrid(data)
+    GridOperations.printGrid[Int](data)
     println("=======")
-    GridOperations.printArray(sum)
+    GridOperations.printArray[Int](sum)
     
     val answer = carryTens(sum.toList)
     println(answer)

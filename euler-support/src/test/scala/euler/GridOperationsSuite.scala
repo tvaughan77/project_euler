@@ -15,7 +15,7 @@ class GridOperationsSuite extends FunSuite {
   test("Initializing a new 3x4 grid creates a 3x4 grid") {
     val rows = 3
     val cols = 4
-    val grid = GridOperations.initialize(rows, cols)
+    val grid = GridOperations.initialize[Int](rows, cols)
     assertEquals(rows, grid.size)
     assertEquals(cols, grid(0).size)
   }
@@ -23,7 +23,7 @@ class GridOperationsSuite extends FunSuite {
   test("Inverting a grid works") {
     val rows = 2
     val cols = 3
-    val grid = GridOperations.initialize(rows, cols)
+    val grid = GridOperations.initialize[Int](rows, cols)
     grid(0)(0) = 1
     grid(0)(1) = 2
     grid(0)(2) = 3
@@ -43,7 +43,7 @@ class GridOperationsSuite extends FunSuite {
   }
   
   test("Rotating a square grid works") {
-    val rotated = GridOperations.rotate(testSquareArray)    
+    val rotated = GridOperations.rotate[Int](testSquareArray)    
     
     assertEquals(3, rotated(0)(0))
     assertEquals(6, rotated(0)(1))
@@ -57,7 +57,7 @@ class GridOperationsSuite extends FunSuite {
   }
   
   test("Rotating a rectangular grid works") {
-    val rotated = GridOperations.rotate(testRectangularArray)
+    val rotated = GridOperations.rotate[Int](testRectangularArray)
         
     assertEquals(12, rotated(0)(0))
     assertEquals(15, rotated(0)(1))
@@ -68,7 +68,7 @@ class GridOperationsSuite extends FunSuite {
   }
   
   test("The diagonal of my square test grid starting at (0,0) is (1, 5, 9)") {
-    val diagonal = GridOperations.diagonal(testSquareArray, 0, 0)
+    val diagonal = GridOperations.diagonal[Int](testSquareArray, 0, 0)
     assertEquals("The diagonal.size should be 3", 3, diagonal.size)
     assertEquals("The diagonal(0) should be 1", 1, diagonal(0))
     assertEquals("The diagonal(1) should be 5", 5, diagonal(1))
@@ -76,14 +76,14 @@ class GridOperationsSuite extends FunSuite {
   }
   
   test("The diagonal of my square test grid starting at (0,1) is (2, 6)") {
-    val diagonal = GridOperations.diagonal(testSquareArray, 0, 1)
+    val diagonal = GridOperations.diagonal[Int](testSquareArray, 0, 1)
     assertEquals(2, diagonal.size)
     assertEquals(2, diagonal(0))
     assertEquals(6, diagonal(1))
   }
 
   test("The diagonal of my square test grid starting at (1,0) is (4, 8)") {
-    val diagonal = GridOperations.diagonal(testSquareArray, 1, 0)
+    val diagonal = GridOperations.diagonal[Int](testSquareArray, 1, 0)
     assertEquals(2, diagonal.size)
     assertEquals(4, diagonal(0))
     assertEquals(8, diagonal(1))
@@ -91,32 +91,32 @@ class GridOperationsSuite extends FunSuite {
   
   test("Asking for a diagonal starting from a too-high row results in errors") {
     intercept[IllegalArgumentException] {
-      GridOperations.diagonal(testSquareArray, 9, 0)
+      GridOperations.diagonal[Int](testSquareArray, 9, 0)
     }
   }
   
   
   test("Asking for a diagonal starting from a too-high column results in errors") {
     intercept[IllegalArgumentException] {
-      GridOperations.diagonal(testSquareArray, 0, 9)
+      GridOperations.diagonal[Int](testSquareArray, 0, 9)
     }
   }
   
   test("The diagonal of my rectangular test grid starting at (0, 0) is (10, 14)") {
-    val diagonal = GridOperations.diagonal(testRectangularArray, 0, 0)
+    val diagonal = GridOperations.diagonal[Int](testRectangularArray, 0, 0)
     assertEquals(2, diagonal.size)
     assertEquals(10, diagonal(0))
     assertEquals(14, diagonal(1))
   }
   
   test("The diagonal of my rectangular test grid starting at (1, 0) is (13)") {
-    val diagonal = GridOperations.diagonal(testRectangularArray, 1, 0)
+    val diagonal = GridOperations.diagonal[Int](testRectangularArray, 1, 0)
     assertEquals(1, diagonal.size)
     assertEquals(13, diagonal(0))
   }
   
   test("The sumGrid sum operation works") {
-    val sum = GridOperations.sumGrid(testSquareArray)
+    val sum = GridOperations.sumGrid[Int](testSquareArray)
     assertEquals(3, sum.length)
     assertEquals(12, sum(0))
     assertEquals(15, sum(1))

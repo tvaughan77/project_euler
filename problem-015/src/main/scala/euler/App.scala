@@ -1,6 +1,7 @@
 package euler.problem015
 
 import euler.LogHelper
+import euler.GridOperations
 import scala.io.Source
 
 /**
@@ -74,7 +75,6 @@ object App extends LogHelper {
   } 
  
   /**
-   * FIXME - replace the first initialization part of this method with a parameterized GridOperations method
    * @param dim the dimensions (x & y) of the square grid to initialize
    * @return a 2-D array of Doubles of size dim by dim.  For this problem, we initialize the bottom
    * row and right column with "1"s and everything else with "0"s.  The bottom right corner is "0" which
@@ -82,10 +82,7 @@ object App extends LogHelper {
    * right- edge to itself.
    */
   private def initializeGrid(dim: Int): Array[Array[Double]] = {
-    var grid = new Array[Array[Double]](dim)
-    for(i <- 0 until dim) {
-      grid(i) = new Array[Double](dim)
-    }
+    var grid = GridOperations.initialize[Double](dim, dim)
     
     // Every vertex along the bottom of the grid has just 1 path to the bottom right corner (straight right)
     // And every vertex along the right side of the grid has just 1 path to the bottom right corner (straight down)
