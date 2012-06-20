@@ -39,7 +39,7 @@ class GraphSuite extends FunSuite {
   }
   
   test("Graph.checkConsistency fails when an edge mentioned a v1 vertex that isn't in graph.verticies") {
-    var graph = Graph.mock().addEdge(Edge("v5 -> v1", Vertex("E"), Vertex("A")))
+    val graph = Graph.mock().addEdge(Edge("v5 -> v1", Vertex("E"), Vertex("A")))
     intercept[IllegalStateException] {
       graph.checkConsistency
     }    
@@ -47,9 +47,31 @@ class GraphSuite extends FunSuite {
   
   
   test("Graph.checkConsistency fails when an edge mentioned a v2 vertex that isn't in graph.verticies") {
-    var graph = Graph.mock().addEdge(Edge("v1 -> v5", Vertex("A"), Vertex("E")))
+    val graph = Graph.mock().addEdge(Edge("v1 -> v5", Vertex("A"), Vertex("E")))
     intercept[IllegalStateException] {
       graph.checkConsistency
     }    
+  }
+  
+  test("The verticies reachable from Vertex(A) are Verticies B and C") {
+    assertEquals(List(Vertex("B"), Vertex("C")), Graph.mock().verticiesFrom(Vertex("A")))
+  }
+  
+  test("The verticies reachable from either Vertex(B) or Vertex(C) is Vertex(D)") {
+    assertEquals(List(Vertex("D")), Graph.mock().verticiesFrom(Vertex("B")))
+    assertEquals(List(Vertex("D")), Graph.mock().verticiesFrom(Vertex("C")))
+  }
+  
+  test("There are no verticies reachable from Vertex(D)") {
+    assertTrue(Graph.mock().verticiesFrom(Vertex("D")).isEmpty)
+  }
+  
+  test("The distinctPaths for our Mock Graph starting from A are (A, C, D) and (A, B, D)") {
+    val distinctPaths = Graph.mock().distinctPaths(Vertex("A"))
+    assertEquals(2, distinctPaths.size)
+    assertTrue(distinctPaths.contains(List(Vertex("A"), Vertex("C"), Vertex("D"))))
+    assertTrue(distinctPaths.contains(List(Vertex("A"), Vertex("B"), Vertex("D"))))
+    
+    println("The distinct paths for our Graph are: " + distinctPaths)
   }
 }

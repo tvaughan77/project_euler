@@ -1,21 +1,22 @@
 package euler.graph
 
 import scala.io.Source
+import scala.collection.immutable.Stack
 import scala.collection.mutable.Set
 import euler.LogHelper
 
+/**
+ * <p>Note - this Graph implementation assumes one-way edges (e.g. "A -> B" does not imply vertex A is 
+ * reachable from vertex B</p>
+ */
 case class Graph private(verticies: Set[Vertex], edges: Set[Edge]) {
   
   
   def addEdge(edge: Edge): Graph = {
-//    if(edges.contains(edge))
-//      throw new RuntimeException("Edge " + edge + " already exists in this graph")
     Graph(verticies, edges + edge)
   }
   
   def addVertex(vertex: Vertex): Graph = {
-//    if(verticies.contains(vertex))
-//      throw new RuntimeException("Vertex " + vertex + " already exists in this graph")
     Graph(verticies + vertex, edges)
   }
   
@@ -25,11 +26,43 @@ case class Graph private(verticies: Set[Vertex], edges: Set[Edge]) {
     if(!edgesWithUnknownV1.isEmpty)
       throw new IllegalStateException("An edge exists referencing a v1 vertex that doesn't exist: " + edgesWithUnknownV1)
     
-    
     val edgesWithUnknownV2 = edges filterNot ((x: Edge) => verticies.contains(x.v2))
     if(!edgesWithUnknownV2.isEmpty)
       throw new IllegalStateException("An edge exists referencing a v2 vertex that doesn't exist: " + edgesWithUnknownV2)
-      
+  }
+  
+  /**
+   * @param v a Starting vertex
+   * @return a list of all the vertexes reachable within 1 edge from {@code v} (may be an empty list if 
+   * {@code v} is disconnected from the graph
+   */
+  def verticiesFrom(v: Vertex): List[Vertex] = {
+    (edges filter ((e:Edge) => e.v1 == v)) flatMap ((e:Edge) => List.apply(e.v2)) toList
+  }
+  
+  /**
+   * TODO - prevent infinite loops when cycles happen
+   * @param v a starting vertex
+   * @return a set of all paths from {@code v} through the graph
+   */
+  def distinctPaths(v: Vertex): Set[List[Vertex]] = {
+    var stack = Stack.empty[List[Vertex]]
+    val paths = Set.empty[List[Vertex]]
+    
+    stack = stack.push(List(v))
+    
+    while(!stack.isEmpty) {
+      val path = stack.top
+      stack = stack.pop                   // This is a nasty API, Scala
+      val nextVertexInPath = path.head
+      val reachableVerticies = verticiesFrom(nextVertexInPath)
+      if(reachableVerticies.isEmpty)
+        paths += path
+      else
+        stack = stack.pushAll(reachableVerticies map ((v:Vertex) => v :: path))
+    }
+    
+    paths map (_.reverse)
   }
   
 //  def vertexByName(name: String): Vertex = {
