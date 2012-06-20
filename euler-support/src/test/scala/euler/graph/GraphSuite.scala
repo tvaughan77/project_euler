@@ -71,7 +71,24 @@ class GraphSuite extends FunSuite {
     assertEquals(2, distinctPaths.size)
     assertTrue(distinctPaths.contains(List(Vertex("A"), Vertex("C"), Vertex("D"))))
     assertTrue(distinctPaths.contains(List(Vertex("A"), Vertex("B"), Vertex("D"))))
-    
-    println("The distinct paths for our Graph are: " + distinctPaths)
+  }
+  
+  test("There are 6 distinct paths in a 3x3 grid") { 
+    val graph = Graph.loadFromResource(Source.fromInputStream(getClass.getResourceAsStream("3x3_graph.txt")))
+    val distinctPaths = graph.distinctPaths(Vertex("A"))
+    assertEquals(6, distinctPaths.size)
+    assertTrue(distinctPaths.contains(List(Vertex("A"), Vertex("B"), Vertex("E"), Vertex("H"), Vertex("I"))))
+  }
+  
+  test("There are 20 distinct paths in a 4x4 grid") {
+    val graph = Graph.loadFromResource(Source.fromInputStream(getClass.getResourceAsStream("4x4_graph.txt")))
+    val distinctPaths = graph.distinctPaths(Vertex("A"))
+    assertEquals(20, distinctPaths.size)
+  }
+
+  // Use this to produce a text file that's parseable by Graph.loadFromResource  
+  test("I am able to write a file") {
+    val dim = 21
+    Graph.createGraphFile("graph_" + dim + "x" + dim + ".txt", dim)
   }
 }

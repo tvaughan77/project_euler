@@ -65,10 +65,6 @@ case class Graph private(verticies: Set[Vertex], edges: Set[Edge]) {
     paths map (_.reverse)
   }
   
-//  def vertexByName(name: String): Vertex = {
-//    verticies.filter(_.name == name)
-//  }
-  
 }
 
 object Graph extends LogHelper {
@@ -116,5 +112,26 @@ object Graph extends LogHelper {
                           Set(v1v2edge, v1v3edge, v2v4edge, v3v4edge))
     graph.checkConsistency
     graph
+  }
+  
+  /**
+   * @param filename the name of a file to save the graph output to
+   * @param dim the dimensions of the square graph
+   */
+  def createGraphFile(filename: String, dim: Int) = {
+    val out = new java.io.FileWriter(filename)
+    
+    for(row <- 1 to dim) {
+      for(col <- 1 to dim) {
+        val currentVertex = "r" + row + "c" + col
+        if(col != dim) {
+          out.write(currentVertex + " -> " + "r" + row + "c" + (col + 1) + "\n")
+        }
+        if(row != dim) {
+          out.write(currentVertex + " -> " + "r" + (row + 1) + "c" + col + "\n")
+        }
+      }
+    }
+    out.close
   }
 }
