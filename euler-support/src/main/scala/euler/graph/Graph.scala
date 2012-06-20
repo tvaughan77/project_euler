@@ -9,7 +9,7 @@ import euler.LogHelper
  * <p>Note - this Graph implementation assumes one-way edges (e.g. "A -> B" does not imply vertex A is 
  * reachable from vertex B</p>
  */
-case class Graph private(verticies: Set[Vertex], edges: Set[Edge]) {
+case class Graph private(verticies: Set[Vertex], edges: Set[Edge]) extends LogHelper {
   
   
   def addEdge(edge: Edge): Graph = {
@@ -56,10 +56,14 @@ case class Graph private(verticies: Set[Vertex], edges: Set[Edge]) {
       stack = stack.pop                   // This is a nasty API, Scala
       val nextVertexInPath = path.head
       val reachableVerticies = verticiesFrom(nextVertexInPath)
-      if(reachableVerticies.isEmpty)
+      if(reachableVerticies.isEmpty) {
+        info("Adding a path from %s to my set of paths: %s", v, path.reverse)
         paths += path
-      else
+      }
+      else {
+        debug("Pushing new directions %s onto stack from path %s", reachableVerticies, path)
         stack = stack.pushAll(reachableVerticies map ((v:Vertex) => v :: path))
+      }
     }
     
     paths map (_.reverse)
