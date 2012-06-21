@@ -68,4 +68,43 @@ object Numbers {
     }
     factors.toList
   }
+  
+  
+  /**
+   * <p>Assumes the input list of numbers corresponds to digits in a number.  So a list like (1, 5, 3) would 
+   * be the number one-hundred-fifty-three.  This method searches for numbers greater than 10 in any given 
+   * index and "carries the one" into the next 10's place.  For example, an array like (1, 15, 3) actually represents
+   * the number 253 because there is 1 x 100, 15 x 10 and 3 x 1.</p>
+   * 
+   * @param raw a list of numbers
+   * @reutrn A List of numbers, none of which is larger than 10, and for which the index of the number represents the
+   * 10's place in an actual number.  For example, the List(7, 3, 2, 5) represents the integer 7,325
+   */
+  def carryTens(raw: List[Int]): List[Int] = {
+    
+    /**
+     * @param xs a list of numbers from least-significant to most-significant
+     * @param carry the number of 10's from recursive iteration N-1 to carry forward to iteration N
+     * @return the concatenation of all the single-digit values after the carry forward algorithm is done, in order
+     * from least-significant to most-significant (i.e. reverse this list to get a real number)
+     */
+    def carryForward(xs: List[Int], carry: Int): List[Int] = {
+      if (xs.isEmpty) {
+        if(carry == 0) {
+          Nil
+        } else {
+          val tens = carry / 10
+          val digit = carry % 10
+          digit :: carryForward(xs, tens)
+        }
+      } else {
+        val number = xs.head + carry
+        val tens = number / 10
+        val digit = number % 10
+        digit :: carryForward(xs.tail, tens)
+      }
+    }
+    
+    carryForward(raw.reverse, 0).reverse
+  }  
 }
