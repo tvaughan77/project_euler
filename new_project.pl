@@ -147,6 +147,37 @@ print NBACTIONS<<EOF;
 EOF
 close(NBACTIONS);
 
+open(LOG4J, ">$rsc_dir/log4j.properties") or die "Could not open log4j.properties for editing $!";
+print<<EOF;
+log4j.debug=true
+log4j.rootLogger=WARN, file, debug
+
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%-5p [%5.15t] %d [%.30c] %m%n
+
+log4j.logger.euler=DEBUG
+
+log4j.appender.file=org.apache.log4j.RollingFileAppender
+log4j.appender.file.threshold=INFO
+log4j.appender.file.append=false
+log4j.appender.file.file=target/output.log
+log4j.appender.file.MaxFileSize=16384KB
+log4j.appender.file.MaxBackupIndex=3
+log4j.appender.file.layout=org.apache.log4j.PatternLayout
+log4j.appender.file.layout.ConversionPattern=%-5p %d [%c{3}] %m%n
+
+log4j.appender.debug=org.apache.log4j.RollingFileAppender
+log4j.appender.debug.threshold=DEBUG
+log4j.appender.debug.append=false
+log4j.appender.debug.file=target/debug.log
+log4j.appender.debug.MaxFileSize=16384KB
+log4j.appender.debug.MaxBackupIndex=1
+log4j.appender.debug.layout=org.apache.log4j.PatternLayout
+log4j.appender.debug.layout.ConversionPattern=%-5p %d [%c{3}] %m%n
+EOF
+close(LOG4J)
+
 
 print "Created new project: $project_name\n";
 
